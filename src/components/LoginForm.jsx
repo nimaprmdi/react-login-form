@@ -12,16 +12,18 @@ const LoginForm = () => {
 
     const schema = {
         username: Joi.string().required().label("Username"),
-        password: Joi.string().required().label("Password"),
+        password: Joi.string().required().min(4).label("Password"),
     };
 
     const validate = () => {
-        const result = Joi.validate(account, schema, { abortEarly: false });
+        const options = { abortEarly: false };
 
-        if (!result.error) return null;
+        const { error } = Joi.validate(account, schema, options);
+
+        if (!error) return null;
 
         const errors = {};
-        for (let item of result.error.details) {
+        for (let item of error.details) {
             errors[item.path[0]] = item.message;
         }
 
@@ -29,13 +31,10 @@ const LoginForm = () => {
     };
 
     const validateProperty = ({ name, value }) => {
-        if (name === "username") {
-            if (value.trim() === "") return "Username is empty";
-        }
-
-        if (name === "password") {
-            if (value.trim() === "") return "Password is empty";
-        }
+        const obj = { [name]: value };
+        const localSchema = { [name]: schema[name] };
+        const { error } = Joi.validate(obj, localSchema);
+        return error ? error.details[0].message : null;
     };
 
     const handleChange = ({ currentTarget: input }) => {
