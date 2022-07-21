@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Joi from "joi-browser";
 import Input from "./common/Input";
 
 const LoginForm = () => {
@@ -9,13 +10,22 @@ const LoginForm = () => {
 
     const [allErrors, setAllErrors] = useState({}); // Global errors state - The Primary One
 
+    const schema = {
+        username: Joi.string().required().label("Username"),
+        password: Joi.string().required().label("Password"),
+    };
+
     const validate = () => {
-        const errors = {}; // Local variable to store errors
+        const result = Joi.validate(account, schema, { abortEarly: false });
 
-        if (account.username.trim() === "") errors.username = "Username Is empty"; // Check if account.username is empty and set error variable with comment
-        if (account.password.trim() === "") errors.password = "Password is Empty";
+        if (!result.error) return null;
 
-        return Object.keys(errors).length === 0 ? null : errors; // Check if errors object has any keys if is empty return null otherwise return errors variable
+        const errors = {};
+        for (let item of result.error.details) {
+            errors[item.path[0]] = item.message;
+        }
+
+        return errors;
     };
 
     const validateProperty = ({ name, value }) => {
