@@ -9,10 +9,10 @@ const RegisterForm = () => {
         name: "",
     });
 
-    const [allErrors, setAllErccccccrors] = useState({});
+    const [allErrors, setAllErrors] = useState({});
 
     const schema = {
-        username: Joi.string().required().email(),
+        username: Joi.string().required().email().label("User Name"),
         password: Joi.string().required().min(4).label("Password"),
         name: Joi.string().required().min(3).label("Name"),
     };
@@ -23,7 +23,7 @@ const RegisterForm = () => {
 
     return (
         <form className="px-3" onSubmit={(e) => handleSubmit(e, data, setAllErrors, doSubmit, schema)}>
-            {renderInput("username", "UserName", data, setData, allErrors, setAllErrors, schema)}
+            {renderInput("username", "User Name", data, setData, allErrors, setAllErrors, schema)}
             {renderInput("password", "Password", data, setData, allErrors, setAllErrors, schema, "password")}
             {renderInput("name", "Name", data, setData, allErrors, setAllErrors, schema)}
 
