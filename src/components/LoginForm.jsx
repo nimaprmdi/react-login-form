@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import Joi from "joi-browser";
 import Input from "./common/Input";
-import {
-    data,
-    setData,
-    allErrors,
-    setAllErrors,
-    validate,
-    validateProperty,
-    handleChange,
-    handleSubmit,
-} from "./common/Form";
+import { handleChange, handleSubmit, renderInput, renderButton } from "./common/Form";
 
 const LoginForm = () => {
     const [data, setData] = useState({
@@ -31,25 +22,10 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={(e) => handleSubmit(e, data, setAllErrors, doSubmit, schema)}>
-            <Input
-                name="username"
-                value={data.username}
-                error={allErrors.username}
-                onChange={(e) => handleChange(e, data, setData, allErrors, setAllErrors, schema)}
-                label="Username"
-            />
+            {renderInput("username", "UserName", data, setData, allErrors, setAllErrors, schema)}
+            {renderInput("password", "Password", data, setData, allErrors, setAllErrors, schema, "password")}
 
-            <Input
-                name="password"
-                value={data.password}
-                error={allErrors.password}
-                onChange={(e) => handleChange(e, data, setData, allErrors, setAllErrors, schema)}
-                label="Password"
-            />
-
-            <button disabled={validate(data, schema)} className="btn btn-primary bt-lg">
-                Submit
-            </button>
+            {renderButton(data, schema, "Submit")}
         </form>
     );
 };

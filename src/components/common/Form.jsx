@@ -1,5 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
+import Input from "./Input";
 
 const validate = (data, schema) => {
     const options = { abortEarly: false }; // aboirtEarly false will display all errors and not stop because of one error
@@ -44,4 +45,25 @@ const handleSubmit = (e, data, setAllErrors, doSubmit, schema) => {
     doSubmit(); // Outside do submit ( The api for example ) => Mixed Function
 };
 
-export { validate, validateProperty, handleChange, handleSubmit };
+const renderInput = (name, label, data, setData, allErrors, setAllErrors, schema, type = "text") => {
+    return (
+        <Input
+            name={name}
+            value={data[name]}
+            error={allErrors[name]}
+            onChange={(e) => handleChange(e, data, setData, allErrors, setAllErrors, schema)}
+            label={label}
+            type={type}
+        />
+    );
+};
+
+const renderButton = (data, schema, label) => {
+    return (
+        <button disabled={validate(data, schema)} className="btn btn-primary bt-lg">
+            {label}
+        </button>
+    );
+};
+
+export { validate, validateProperty, handleChange, handleSubmit, renderInput, renderButton };
