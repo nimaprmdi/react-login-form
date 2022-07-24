@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import Joi from "joi-browser";
-import Input from "./common/Input";
-import { handleChange, handleSubmit, renderInput, renderButton } from "./common/Form";
+import { renderInput, renderButton, handleSubmit } from "./common/Form";
 
-const LoginForm = () => {
+const RegisterForm = () => {
     const [data, setData] = useState({
         username: "",
         password: "",
+        name: "",
     });
 
-    const [allErrors, setAllErrors] = useState({});
+    const [allErrors, setAllErccccccrors] = useState({});
 
     const schema = {
-        username: Joi.string().required().label("Username"),
+        username: Joi.string().required().email(),
         password: Joi.string().required().min(4).label("Password"),
+        name: Joi.string().required().min(3).label("Name"),
     };
 
     const doSubmit = () => {
@@ -24,10 +25,11 @@ const LoginForm = () => {
         <form className="px-3" onSubmit={(e) => handleSubmit(e, data, setAllErrors, doSubmit, schema)}>
             {renderInput("username", "UserName", data, setData, allErrors, setAllErrors, schema)}
             {renderInput("password", "Password", data, setData, allErrors, setAllErrors, schema, "password")}
+            {renderInput("name", "Name", data, setData, allErrors, setAllErrors, schema)}
 
             {renderButton(data, schema, "Submit")}
         </form>
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
