@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Joi from "joi-browser";
+import Joi from "joi";
 import Input from "./common/Input";
 import { handleChange, handleSubmit, renderInput, renderButton } from "./common/Form";
 
@@ -11,10 +11,10 @@ const LoginForm = () => {
 
     const [allErrors, setAllErrors] = useState({});
 
-    const schema = {
+    const schema = Joi.object({
         username: Joi.string().required().label("Username"),
         password: Joi.string().required().min(4).label("Password"),
-    };
+    });
 
     const doSubmit = () => {
         console.log("Submit");

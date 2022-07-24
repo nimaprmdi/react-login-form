@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Joi from "joi-browser";
+import Joi from "joi";
 import { renderInput, renderButton, handleSubmit } from "./common/Form";
 
 const RegisterForm = () => {
@@ -11,11 +11,14 @@ const RegisterForm = () => {
 
     const [allErrors, setAllErrors] = useState({});
 
-    const schema = {
-        username: Joi.string().required().email().label("User Name"),
+    const schema = Joi.object({
+        username: Joi.string()
+            .email({ tlds: { allow: false } })
+            .required()
+            .label("Email"),
         password: Joi.string().required().min(4).label("Password"),
         name: Joi.string().required().min(3).label("Name"),
-    };
+    });
 
     const doSubmit = () => {
         console.log("Submit");
